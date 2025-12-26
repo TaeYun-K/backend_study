@@ -1,7 +1,7 @@
 import http from "k6/http";
 
 export const options = {
-  vus: 100, // Virtual Users
+  vus: 10, // Virtual Users
   duration: "2m", // Test duration
 };
 
