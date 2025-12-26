@@ -16,6 +16,12 @@ spring:
       port: 6379
 
 management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
   endpoints:
     web:
       exposure:
