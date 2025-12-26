@@ -3,6 +3,12 @@ spring:
     url: jdbc:mysql://localhost:3306/wit?serverTimezone=Asia/Seoul&characterEncoding=utf8
     username: ssafy
     password: ssafy
+
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      connection-timeout: 3000
+
   jpa:
     hibernate:
       ddl-auto: none

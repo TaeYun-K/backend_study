@@ -22,7 +22,6 @@ Grafana 를 통해서 모니터링을 해보고,
 
 ##
 
-12.26
 K6 를 통해서 동시 요청을 10, 50, 100 씩 30초간 보내보았다.
 
 | VU  | avg latency | p95     | RPS   |
@@ -36,3 +35,24 @@ p95 지표는 선형적으로 증가했지만, RPS 는 1400 을 넘지 못하는
 즉 서버의 초당 처리량에서 병목이 발생하고 있다.
 
 <img src = "assets/image1.png">
+
+VUS 를 500으로 하니 요청 오류가 났다.
+mysql 의 connection pool size 를 찾아보니,
+
+mysql 명령어 : SHOW VARIABLES LIKE '%max_connection%';
+max_connections 151
+mysqlx_max_connections 100
+이라서,
+
+SET GLOBAL max_connections = 500; 을 통해
+max connection 을 올렸다.
+
+이후 VUS 를 200 으로 올렸을 때,
+p95 에서 약간의 병목이 발생했다
+
+| VU      | avg latency | p95         | RPS      |
+| ------- | ----------- | ----------- | -------- |
+| 10      | 7.5ms       | 8.5ms       | 1320     |
+| 50      | 36.5ms      | 42.6ms      | 1365     |
+| 100     | 71.5ms      | 77.5ms      | 1396     |
+| **200** | **117.6ms** | **259.2ms** | **1606** |
