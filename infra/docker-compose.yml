@@ -1,0 +1,35 @@
+services:
+    redis:
+        image: redis:7-alpine
+        container_name: perf-redis
+        ports:
+            - "6379:6379"
+        command: [ "redis-server", "--appendonly", "yes" ]
+        volumes:
+            - redis_data:/data
+
+    prometheus:
+        image: prom/prometheus:latest
+        container_name: perf-prometheus
+        ports:
+            - "9090:9090"
+        volumes:
+            - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+            - prometheus_data:/prometheus
+        depends_on:
+            - redis
+
+    grafana:
+        image: grafana/grafana:latest
+        container_name: perf-grafana
+        ports:
+            - "3001:3000"
+        volumes:
+            - grafana_data:/var/lib/grafana
+        depends_on:
+            - prometheus
+
+volumes:
+    redis_data:
+    prometheus_data:
+    grafana_data:
