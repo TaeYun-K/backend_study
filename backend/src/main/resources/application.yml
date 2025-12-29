@@ -5,7 +5,7 @@ spring:
     password: ssafy
 
     hikari:
-      maximum-pool-size: 50
+      maximum-pool-size: 1000
       minimum-idle: 10
       connection-timeout: 3000
 
@@ -32,3 +32,9 @@ management:
     web:
       exposure:
         include: health,info,prometheus,metrics
+
+server:
+  tomcat:
+    threads:
+      max: 1000
+    accept-count: 1000
